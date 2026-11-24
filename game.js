@@ -1,4 +1,4 @@
-﻿/* Angry Senabahini
+/* Angry Senabahini
  * A physics slingshot game. All graphics are drawn procedurally on canvas.
  * Physics: Matter.js 0.19 */
 'use strict';
@@ -524,7 +524,7 @@ function loadLevel(idx, attract = false) {
   const th = THEMES[L.theme];
   state = {
     idx, L, attract, theme: th, time: 0, grace: 0.4, score: 0, shake: 0,
-    queue: L.soldiers.slice(), loaded: null, loadAnim: 1, flying: [], blocks: [], robots: [], hills: [],
+    queue: L.soldiers.concat(L.soldiers), loaded: null, loadAnim: 1, flying: [], blocks: [], robots: [], hills: [],
     particles: [], trail: [], removeQ: [], aim: null, phase: 'play', camMode: 'intro', introT: 0,
     nextT: 0, loseT: 0, winT: 0, bonusDone: false, ended: false, bandVib: 0, blinkT: 2, slowmo: 0,
     totalBlockScore: 0, fortX: 1800, worldW: 2400, lastLaunched: null, sc: genScenery(idx + 1),
@@ -891,7 +891,7 @@ function update(dt) {
         state.bonusDone = true;
         const rem = state.queue.length + (state.loaded ? 1 : 0);
         for (let i = 0; i < rem; i++) {
-          const x = SLING.x - 95 - (i - (state.loaded ? 1 : 0)) * 54;
+          const x = SLING.x - 95 - Math.max(0, i - (state.loaded ? 1 : 0)) * Math.min(54, 300 / Math.max(1, rem));
           setTimeout(() => { if (state && !state.attract) addScore(10000, i === 0 && state.loaded ? SLING.x : x, GROUND - 90, true); }, i * 300);
         }
         state.bonusWait = 1.2 + rem * 0.3;
@@ -1161,7 +1161,7 @@ function drawQueue() {
   const start = state.loaded && state.loadAnim < 1 ? 1 : 0;
   for (let i = 0; i < state.queue.length; i++) {
     const type = state.queue[i], r = SOLDIERS[type].r;
-    const x = SLING.x - 95 - (i + start) * 54;
+    const x = SLING.x - 95 - (i + start) * Math.min(54, 300 / Math.max(1, state.queue.length + start));
     const hop = Math.max(0, Math.sin(state.time * 4 + i * 1.3)) * 6;
     drawSoldier(ctx, type, x, GROUND - r - hop, r, 0, state.blinkT < 0 && i % 2 ? 'blink' : 'grit', state.time + i);
   }
