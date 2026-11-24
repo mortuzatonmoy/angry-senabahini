@@ -1,4 +1,4 @@
-﻿/* অ্যাংরি সেনাবাহিনী — Angry Senabahini
+﻿/* Angry Senabahini
  * A physics slingshot game. All graphics are drawn procedurally on canvas.
  * Physics: Matter.js 0.19 */
 'use strict';
@@ -22,21 +22,21 @@ const easeInOut = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 const rnd = (a, b) => a + Math.random() * (b - a);
 function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
-const bn = n => Math.round(n).toLocaleString('bn-BD');
+const bn = n => Math.round(n).toLocaleString('en-US');
 function rr(g, x, y, w, h, r) { r = Math.min(r, w / 2, h / 2); g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
 
 // ---------------------------------------------------------------- data
 const SOLDIERS = {
-  red:    { name: 'সিপাহী',  ab: 'শক্তিশালী সাধারণ আঘাত', color: '#e23b2e', light: '#ff8f6e', dark: '#8f1a12', belly: '#f7dcc0', r: 24, density: 0.004, hat: 'helmet' },
-  yellow: { name: 'কমান্ডো', ab: 'ট্যাপে তীব্র গতি · কাঠ ভাঙে', color: '#f6c42d', light: '#fff2a0', dark: '#a87a07', belly: '#fff4cf', r: 22, density: 0.0038, hat: 'band', tap: 'ঝড়ের গতি!' },
-  black:  { name: 'বোমারু',  ab: 'ট্যাপে বিস্ফোরণ · পাথর ভাঙে', color: '#3d4352', light: '#8891a8', dark: '#15181f', belly: '#a2abbd', r: 27, density: 0.005, hat: 'fuse', tap: 'বিস্ফোরণ!' },
-  blue:   { name: 'ত্রয়ী',   ab: 'ট্যাপে তিন ভাগ · কাঁচ ভাঙে', color: '#3b8fe6', light: '#a6d4ff', dark: '#1b4f8f', belly: '#dceeff', r: 19, density: 0.004, hat: 'helmet', tap: 'তিন ভাগ!' },
+  red:    { name: 'Sepoy', ab: 'Heavy all-round hitter', color: '#e23b2e', light: '#ff8f6e', dark: '#8f1a12', belly: '#f7dcc0', r: 24, density: 0.004, hat: 'helmet' },
+  yellow: { name: 'Commando', ab: 'Tap: speed dash · smashes wood', color: '#f6c42d', light: '#fff2a0', dark: '#a87a07', belly: '#fff4cf', r: 22, density: 0.0038, hat: 'band', tap: 'Speed dash!' },
+  black:  { name: 'Bomber', ab: 'Tap: explode · cracks stone', color: '#3d4352', light: '#8891a8', dark: '#15181f', belly: '#a2abbd', r: 27, density: 0.005, hat: 'fuse', tap: 'Explode!' },
+  blue:   { name: 'Trio', ab: 'Tap: split in three · shatters glass', color: '#3b8fe6', light: '#a6d4ff', dark: '#1b4f8f', belly: '#dceeff', r: 19, density: 0.004, hat: 'helmet', tap: 'Split!' },
 };
 const MATS = {
-  wood:  { density: 0.0018, hp: 110, friction: 0.85, rest: 0.05, score: 500,  debris: ['#d79a55', '#a8682c', '#7a4519'] },
-  stone: { density: 0.0045, hp: 520, friction: 0.95, rest: 0.02, score: 1000, debris: ['#b9bec4', '#8a9199', '#5f666e'] },
-  glass: { density: 0.0012, hp: 32,  friction: 0.4,  rest: 0.1,  score: 300,  debris: ['#d8f4ff', '#9fdcf7', '#ffffff'] },
-  tnt:   { density: 0.0015, hp: 40,  friction: 0.8,  rest: 0.05, score: 500,  debris: ['#d8322f', '#8e1715', '#f3d27a'] },
+  wood:  { density: 0.0018, hp: 66, friction: 0.85, rest: 0.05, score: 500,  debris: ['#d79a55', '#a8682c', '#7a4519'] },
+  stone: { density: 0.0045, hp: 312, friction: 0.95, rest: 0.02, score: 1000, debris: ['#b9bec4', '#8a9199', '#5f666e'] },
+  glass: { density: 0.0012, hp: 19,  friction: 0.4,  rest: 0.1,  score: 300,  debris: ['#d8f4ff', '#9fdcf7', '#ffffff'] },
+  tnt:   { density: 0.0015, hp: 24,  friction: 0.8,  rest: 0.05, score: 500,  debris: ['#d8322f', '#8e1715', '#f3d27a'] },
 };
 const THEMES = {
   day: { sky: ['#3d8ff0', '#8ccaff', '#e3f5ff'], sun: '#fff7cf', glow: '255,240,170', far: ['#b6d0e8', '#9dbbd8'], near: ['#86aecd', '#6d97ba'],
@@ -71,18 +71,18 @@ function builder() {
 }
 const G = GROUND;
 const LEVELS = [
-  { name: 'প্রথম অভিযান', theme: 'day', soldiers: ['red', 'red', 'red'], build(b) {
+  { name: 'First Mission', theme: 'day', soldiers: ['red', 'red', 'red'], build(b) {
     let t = b.frame(1650, G, 170, 120, 'wood'); b.robot(1650, G); b.robot(1650, t, 22);
     b.frame(1900, G, 150, 100, 'glass', 'wood'); b.robot(1900, G, 22);
   } },
-  { name: 'কাঁচের ঘর', theme: 'day', soldiers: ['red', 'blue', 'red'], build(b) {
+  { name: 'Glass House', theme: 'day', soldiers: ['red', 'blue', 'red'], build(b) {
     const t1 = b.frame(1650, G, 190, 110, 'wood'); b.robot(1650, G);
     const t2 = b.frame(1650, t1, 150, 95, 'glass'); b.robot(1650, t1, 22);
     b.robot(1650, t2, 20);
     const t3 = b.frame(1920, G, 130, 150, 'glass'); b.robot(1920, G, 22);
     b.cube(1920, t3, 40, 'glass');
   } },
-  { name: 'উঁচু মিনার', theme: 'sunset', soldiers: ['yellow', 'red', 'yellow'], build(b) {
+  { name: 'High Tower', theme: 'sunset', soldiers: ['yellow', 'red', 'yellow'], build(b) {
     const p = b.post(1560, G, 170, 'stone', 30); b.cube(1560, p, 34, 'glass');
     const a = b.frame(1800, G, 170, 120, 'wood'); b.robot(1800, G);
     const c = b.frame(1800, a, 150, 110, 'wood'); b.robot(1800, a, 22);
@@ -90,13 +90,13 @@ const LEVELS = [
     b.robot(1800, d, 24);
     const q = b.post(2040, G, 170, 'stone', 30); b.cube(2040, q, 34, 'glass');
   } },
-  { name: 'পাথরের বাংকার', theme: 'sunset', soldiers: ['red', 'black', 'yellow'], build(b) {
+  { name: 'Stone Bunker', theme: 'sunset', soldiers: ['red', 'black', 'yellow'], build(b) {
     const t = b.frame(1750, G, 280, 110, 'stone'); b.tnt(1750, G); b.robot(1665, G, 22); b.robot(1835, G, 22);
     const u = b.frame(1750, t, 190, 95, 'wood'); b.robot(1750, t, 24);
     b.robot(1750, u, 22);
     b.frame(2020, G, 120, 90, 'stone'); b.robot(2020, G, 20);
   } },
-  { name: 'দুই মিনার', theme: 'day', soldiers: ['yellow', 'blue', 'black', 'red'], build(b) {
+  { name: 'Twin Towers', theme: 'day', soldiers: ['yellow', 'blue', 'black', 'red'], build(b) {
     let top = G;
     for (const x of [1600, 2000]) {
       const a = b.frame(x, G, 140, 130, 'stone'); b.robot(x, G, 22);
@@ -107,7 +107,7 @@ const LEVELS = [
     b.cube(1600, br, 36, 'glass'); b.cube(2000, br, 36, 'glass');
     b.tnt(1770, G); b.robot(1840, G, 22);
   } },
-  { name: 'পিরামিড', theme: 'night', soldiers: ['black', 'yellow', 'black', 'red'], build(b) {
+  { name: 'Pyramid', theme: 'night', soldiers: ['black', 'yellow', 'black', 'red'], build(b) {
     let base = G;
     for (let row = 0; row < 4; row++) {
       const n = 4 - row, x0 = 1600 + row * 55; let top = base;
@@ -117,14 +117,14 @@ const LEVELS = [
     }
     b.robot(1600 + 3 * 55, base, 22);
   } },
-  { name: 'পাহাড়ের দুর্গ', theme: 'sunset', soldiers: ['red', 'yellow', 'blue', 'black'], build(b) {
+  { name: 'Hill Fort', theme: 'sunset', soldiers: ['red', 'yellow', 'blue', 'black'], build(b) {
     const H = b.hill(1850, 560, 170);
     const t = b.frame(1730, H, 160, 110, 'wood'); b.robot(1730, H, 22);
     const u = b.frame(1730, t, 120, 90, 'glass'); b.robot(1730, t, 20); b.tnt(1730, u, 40);
     const v = b.frame(1960, H, 150, 130, 'stone', 'wood'); b.robot(1960, H, 24); b.robot(1960, v, 22);
     b.frame(2250, G, 110, 80, 'glass'); b.robot(2250, G, 22);
   } },
-  { name: 'শেষ যুদ্ধ', theme: 'night', soldiers: ['red', 'yellow', 'black', 'blue', 'black'], build(b) {
+  { name: 'Night Raid', theme: 'night', soldiers: ['red', 'yellow', 'black', 'blue', 'black'], build(b) {
     const H = b.hill(1700, 300, 90);
     const a = b.frame(1700, H, 180, 120, 'stone'); b.robot(1700, H, 24);
     const a2 = b.frame(1700, a, 150, 100, 'wood'); b.robot(1700, a, 22); b.cube(1700, a2, 44, 'glass');
@@ -132,6 +132,49 @@ const LEVELS = [
     const c2 = b.frame(1980, c, 160, 110, 'wood'); b.robot(1980, c, 24);
     const c3 = b.frame(1980, c2, 120, 90, 'glass'); b.robot(1980, c2, 20); b.robot(1980, c3, 22);
     const d = b.frame(2250, G, 140, 110, 'wood'); b.robot(2250, G, 22); b.tnt(2250, d, 40);
+  } },
+  { name: 'Glass Gardens', theme: 'day', soldiers: ['blue', 'blue', 'red'], build(b) {
+    for (const x of [1550, 1750, 1950]) { const t = b.frame(x, G, 140, 120, 'glass', 'wood'); b.robot(x, G, 22); b.robot(x, t, 20); }
+  } },
+  { name: 'Timber Town', theme: 'sunset', soldiers: ['yellow', 'yellow', 'red'], build(b) {
+    for (const x of [1600, 1900]) { const a = b.frame(x, G, 180, 110, 'wood'); b.robot(x, G, 24); const c = b.frame(x, a, 140, 100, 'wood'); b.robot(x, a, 22); b.robot(x, c, 20); }
+    b.tnt(1750, G);
+  } },
+  { name: 'Powder Keg', theme: 'night', soldiers: ['red', 'red', 'black'], build(b) {
+    const a = b.frame(1700, G, 220, 100, 'stone'); b.tnt(1660, G); b.tnt(1740, G); b.robot(1700, a, 24);
+    b.tnt(1830, G);
+    const c = b.frame(1950, G, 160, 120, 'wood'); b.tnt(1920, G, 40); b.robot(1985, G, 20); b.robot(1950, c, 22);
+  } },
+  { name: 'Hilltop Watch', theme: 'day', soldiers: ['yellow', 'blue', 'black'], build(b) {
+    b.frame(1600, G, 120, 90, 'glass'); b.robot(1600, G, 22);
+    const H = b.hill(1900, 420, 220);
+    const t = b.frame(1820, H, 140, 110, 'wood'); b.robot(1820, H, 22); b.robot(1820, t, 22);
+    b.frame(1990, H, 120, 90, 'glass'); b.robot(1990, H, 20);
+  } },
+  { name: 'Stone Wall', theme: 'sunset', soldiers: ['black', 'black', 'yellow', 'red'], build(b) {
+    b.post(1520, G, 200, 'stone', 40);
+    const a = b.frame(1750, G, 200, 120, 'stone'); b.robot(1750, G, 26);
+    const c = b.frame(1750, a, 160, 100, 'wood'); b.robot(1750, a, 22); b.robot(1750, c, 22);
+    const d = b.frame(2000, G, 140, 140, 'wood'); b.robot(2000, G, 22); b.tnt(2000, d, 40);
+  } },
+  { name: 'Sky Bridge', theme: 'day', soldiers: ['blue', 'yellow', 'black', 'red'], build(b) {
+    const H1 = b.hill(1550, 240, 200); b.hill(2150, 240, 200);
+    const br = b.slab(1600, 2100, H1, 'wood'); b.robot(1750, br, 22); b.robot(1950, br, 22);
+    b.frame(1500, H1, 120, 90, 'glass'); b.robot(1500, H1, 20);
+    b.frame(2200, H1, 120, 90, 'stone'); b.robot(2200, H1, 22);
+    b.robot(1850, G, 24);
+  } },
+  { name: 'Twin Bosses', theme: 'night', soldiers: ['red', 'black', 'yellow', 'blue', 'black'], build(b) {
+    for (const x of [1650, 2050]) { const a = b.frame(x, G, 180, 150, 'stone'); b.robot(x, G, 36); const c = b.frame(x, a, 140, 100, 'wood'); b.robot(x, a, 22); }
+    const t = b.tnt(1850, G); b.robot(1850, t, 20);
+  } },
+  { name: 'Grand Citadel', theme: 'sunset', soldiers: ['red', 'yellow', 'blue', 'black', 'black', 'yellow'], build(b) {
+    const H = b.hill(1850, 700, 80);
+    [1650, 1850, 2050].forEach((x, i) => {
+      const a = b.frame(x, H, 150, 110, i === 1 ? 'stone' : 'wood'); b.robot(x, H, i === 1 ? 32 : 22);
+      const c = b.frame(x, a, 120, 90, 'glass'); b.robot(x, a, 20); b.robot(x, c, 22);
+    });
+    b.tnt(1750, H, 40); b.tnt(1950, H, 40);
   } },
 ];
 
@@ -1239,14 +1282,14 @@ function updateHud(force) {
     lastScoreShown = state.score;
   }
   if (force) {
-    $('lvlLabel').textContent = `লেভেল ${bn(state.idx + 1)} · ${state.L.name}`;
+    $('lvlLabel').textContent = `Level ${bn(state.idx + 1)} · ${state.L.name}`;
     $('bestVal').textContent = bn(progress.best[state.idx] || 0);
   }
 }
 function updateHint() {
   if (!state || state.attract) { show(ui.hint, false); return; }
   const s = activeAbilitySoldier();
-  if (s) { ui.hint.textContent = `👆 ট্যাপ করুন — ${SOLDIERS[s.type].tap}`; show(ui.hint, true); }
+  if (s) { ui.hint.textContent = `👆 Tap now — ${SOLDIERS[s.type].tap}`; show(ui.hint, true); }
   else show(ui.hint, false);
 }
 function starsFor(score) { return score >= state.star3 ? 3 : score >= state.star2 ? 2 : 1; }
@@ -1265,12 +1308,12 @@ function endLevel(win) {
   }
   setTimeout(() => {
     const t = $('resTitle');
-    t.textContent = win ? (idx === LEVELS.length - 1 ? 'চূড়ান্ত বিজয়! 🏆' : 'বিজয়!') : 'রোবটরা জিতে গেল!';
+    t.textContent = win ? (idx === LEVELS.length - 1 ? 'Total Victory! 🏆' : 'Victory!') : 'The Robots Win!';
     t.className = win ? 'win' : 'lose';
     const stars = $('resStars').children;
     for (const s of stars) s.className = '';
     $('resScore').textContent = bn(score);
-    $('resBest').textContent = `সেরা স্কোর: ${bn(progress.best[idx] || 0)}`;
+    $('resBest').textContent = `Best score: ${bn(progress.best[idx] || 0)}`;
     show($('resNext'), win && idx < LEVELS.length - 1);
     show(ui.result, true);
     if (win) { Sound.win(); for (let i = 0; i < st; i++) setTimeout(() => { stars[i].className = 'on'; Sound.star(i); }, 450 + i * 380); }
@@ -1313,8 +1356,8 @@ function openMenu() {
 }
 function syncSoundLabels() {
   const on = Sound.enabled;
-  $('btnSound').textContent = on ? '🔊 সাউন্ড: চালু' : '🔇 সাউন্ড: বন্ধ';
-  $('pSound').textContent = on ? '🔊 সাউন্ড: চালু' : '🔇 সাউন্ড: বন্ধ';
+  $('btnSound').textContent = on ? '🔊 Sound: On' : '🔇 Sound: Off';
+  $('pSound').textContent = on ? '🔊 Sound: On' : '🔇 Sound: Off';
 }
 function buildRoster() {
   const ro = $('roster');

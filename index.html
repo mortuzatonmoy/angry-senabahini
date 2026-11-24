@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>অ্যাংরি সেনাবাহিনী — Angry Senabahini</title>
-<meta name="description" content="গুলতি দিয়ে সৈনিক ছুড়ে রোবটদের দুর্গ ভাঙার ফিজিক্স গেম।">
+<title>Angry Senabahini</title>
+<meta name="description" content="Launch angry soldiers from a slingshot and smash the robot forts. A physics browser game.">
 <meta name="theme-color" content="#1b2a44">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='36' r='26' fill='%23e23b2e'/%3E%3Cpath d='M6 30a26 22 0 0 1 52 0z' fill='%23556b2f'/%3E%3Ccircle cx='23' cy='38' r='6' fill='%23fff'/%3E%3Ccircle cx='41' cy='38' r='6' fill='%23fff'/%3E%3Ccircle cx='25' cy='39' r='3'/%3E%3Ccircle cx='43' cy='39' r='3'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,14 +17,14 @@
 
 <div id="hud" class="hidden">
   <div class="hud-left">
-    <button id="btnPause" class="icon-btn" aria-label="বিরতি">❚❚</button>
-    <button id="btnRestart" class="icon-btn" aria-label="আবার শুরু">↻</button>
+    <button id="btnPause" class="icon-btn" aria-label="Pause">❚❚</button>
+    <button id="btnRestart" class="icon-btn" aria-label="Restart">↻</button>
     <div class="lvl-label" id="lvlLabel"></div>
   </div>
   <div class="score-box">
-    <div class="score-label">স্কোর</div>
-    <div id="scoreVal">০</div>
-    <div class="best">সেরা: <span id="bestVal">০</span></div>
+    <div class="score-label">SCORE</div>
+    <div id="scoreVal">0</div>
+    <div class="best">Best: <span id="bestVal">0</span></div>
   </div>
 </div>
 
@@ -32,21 +32,21 @@
 
 <div id="menu" class="screen">
   <div class="title-wrap">
-    <h1 class="logo"><span class="l1">অ্যাংরি</span><span class="l2">সেনাবাহিনী</span></h1>
-    <div class="sub">ANGRY SENABAHINI</div>
+    <h1 class="logo"><span class="l1">ANGRY</span><span class="l2">SENABAHINI</span></h1>
+    <div class="sub">THE SLINGSHOT ARMY</div>
   </div>
   <div class="roster" id="roster"></div>
   <div class="menu-btns">
-    <button class="btn big primary" id="btnPlay">▶ খেলা শুরু</button>
-    <button class="btn" id="btnSound">🔊 সাউন্ড: চালু</button>
+    <button class="btn big primary" id="btnPlay">▶ Play</button>
+    <button class="btn" id="btnSound">🔊 Sound: On</button>
   </div>
-  <p class="howto">গুলতি পেছনে টেনে ছেড়ে দিন · উড়ন্ত অবস্থায় ট্যাপ করলে বিশেষ ক্ষমতা · সব রোবট ধ্বংস করুন!</p>
+  <p class="howto">Pull the slingshot back and let go · Tap mid-flight for special powers · Destroy every robot!</p>
 </div>
 
 <div id="levels" class="screen hidden">
-  <h2 class="screen-title">লেভেল বাছাই করুন</h2>
+  <h2 class="screen-title">Select Level</h2>
   <div class="grid" id="levelGrid"></div>
-  <button class="btn" id="btnBack">← ফিরে যান</button>
+  <button class="btn" id="btnBack">← Back</button>
 </div>
 
 <div id="result" class="modal hidden">
@@ -56,26 +56,26 @@
     <div class="res-score" id="resScore"></div>
     <div class="res-best" id="resBest"></div>
     <div class="row">
-      <button class="btn sm" id="resMenu">☰ লেভেল</button>
-      <button class="btn sm" id="resRetry">↻ আবার</button>
-      <button class="btn sm primary" id="resNext">পরের লেভেল ▶</button>
+      <button class="btn sm" id="resMenu">☰ Levels</button>
+      <button class="btn sm" id="resRetry">↻ Retry</button>
+      <button class="btn sm primary" id="resNext">Next Level ▶</button>
     </div>
   </div>
 </div>
 
 <div id="pause" class="modal hidden">
   <div class="card">
-    <h2>বিরতি</h2>
+    <h2>Paused</h2>
     <div class="row col">
-      <button class="btn primary" id="pResume">▶ চালিয়ে যান</button>
-      <button class="btn" id="pRestart">↻ আবার শুরু</button>
-      <button class="btn" id="pMenu">☰ লেভেল তালিকা</button>
-      <button class="btn" id="pSound">🔊 সাউন্ড</button>
+      <button class="btn primary" id="pResume">▶ Resume</button>
+      <button class="btn" id="pRestart">↻ Restart</button>
+      <button class="btn" id="pMenu">☰ Level List</button>
+      <button class="btn" id="pSound">🔊 Sound</button>
     </div>
   </div>
 </div>
 
-<div id="rotate" class="rotate hidden">📱 ভালো অভিজ্ঞতার জন্য ফোনটি আড়াআড়ি (landscape) করুন</div>
+<div id="rotate" class="rotate hidden">📱 Rotate your phone to landscape for the best experience</div>
 
 <script src="lib/matter.min.js"></script>
 <script src="game.js"></script>

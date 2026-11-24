@@ -56,8 +56,9 @@ canvas#game:active{cursor:grabbing}
 .menu-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:center}
 .howto{font-size:15px;opacity:.9;text-align:center;text-shadow:0 2px 4px rgba(0,0,0,.6);max-width:640px}
 .screen-title{font-size:40px;font-weight:800;text-shadow:0 4px 0 rgba(0,0,0,.35)}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.lv{width:110px;height:110px;border-radius:22px;border:0;cursor:pointer;font-family:inherit;color:#fff;position:relative;
+.grid{display:grid;grid-template-columns:repeat(8,1fr);gap:14px}
+@media (max-width:1000px){.grid{grid-template-columns:repeat(4,1fr)}}
+.lv{width:100px;height:100px;border-radius:22px;border:0;cursor:pointer;font-family:inherit;color:#fff;position:relative;
   background:linear-gradient(#ffb43a,#e8681a);box-shadow:0 6px 0 #9a3e08,0 10px 20px rgba(0,0,0,.35),inset 0 3px 0 rgba(255,255,255,.4);transition:transform .1s}
 .lv:hover{transform:translateY(-3px)}
 .lv:active{transform:translateY(4px)}
@@ -98,7 +99,9 @@ canvas#game:active{cursor:grabbing}
   .hero canvas{width:44px;height:44px}
   .hero small{display:none}
   .btn.big{font-size:24px;padding:8px 30px 6px}
-  .lv{width:86px;height:86px}
+  .lv{width:70px;height:70px}
+  .lv .nm{display:none}
+  .grid{grid-template-columns:repeat(8,1fr)}
   .lv .n{font-size:32px}
   .grid{gap:10px}
   .screen-title{font-size:28px}

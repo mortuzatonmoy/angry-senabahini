@@ -1,26 +1,26 @@
-# অ্যাংরি সেনাবাহিনী — Angry Senabahini
+# Angry Senabahini
 
-গুলতি দিয়ে সৈনিক ছুড়ে রোবটদের দুর্গ ভাঙার ফিজিক্স গেম।
+A physics slingshot game: launch angry soldiers and smash the robot forts.
 
-▶ **খেলুন:** https://mortuzatonmoy.github.io/angry-senabahini/
+▶ **Play:** https://mortuzatonmoy.github.io/angry-senabahini/
 
-## কীভাবে খেলবেন
-- গুলতিতে বসা সৈনিককে পেছনে টেনে ছেড়ে দিন।
-- সৈনিক উড়ন্ত অবস্থায় থাকার সময় স্ক্রিনে ট্যাপ করলে (বা Space চাপলে) তার বিশেষ ক্ষমতা কাজ করে।
-- সব রোবট ধ্বংস করলে লেভেল জেতা যায়। যে সৈনিকরা ব্যবহার হয়নি, তাদের প্রত্যেকের জন্য ১০,০০০ বোনাস পয়েন্ট।
-- খালি জায়গায় টেনে বা মাউস হুইল ঘুরিয়ে ক্যামেরা সরানো যায়। কীবোর্ডে `R` চাপলে আবার শুরু হয়, `P` বা `Esc` চাপলে বিরতি।
+## How to play
+- Drag the soldier on the slingshot back and let go.
+- While a soldier is in the air, tap the screen (or press Space) to use their special power.
+- Destroy every robot to clear the level. Each soldier you didn't use is worth a 10,000-point bonus.
+- Drag an empty area or scroll the mouse wheel to move the camera. Press `R` to restart and `P` or `Esc` to pause.
 
-## সৈনিকরা
-| সৈনিক | ক্ষমতা |
+## Soldiers
+| Soldier | Power |
 |---|---|
-| সিপাহী (লাল) | শক্তিশালী সাধারণ আঘাত |
-| কমান্ডো (হলুদ) | ট্যাপে তীব্র গতি, কাঠ সহজে ভাঙে |
-| বোমারু (কালো) | ট্যাপে বিস্ফোরণ, পাথর ভাঙে |
-| ত্রয়ী (নীল) | ট্যাপে তিন ভাগ হয়ে যায়, কাঁচ ভাঙে |
+| Sepoy (red) | Heavy all-round hitter |
+| Commando (yellow) | Tap: speed dash, smashes wood |
+| Bomber (black) | Tap: explode, cracks stone |
+| Trio (blue) | Tap: split in three, shatters glass |
 
-## প্রযুক্তি
-- শুধু HTML, CSS আর JavaScript। কোনো build ধাপ লাগে না।
-- ফিজিক্স: [Matter.js](https://brm.io/matter-js/) 0.19 (`lib/` ফোল্ডারে রাখা আছে)
-- সব গ্রাফিক্স canvas-এ কোড দিয়ে আঁকা, কোনো ছবির ফাইল নেই।
-- সব শব্দ Web Audio দিয়ে তৈরি।
-- ৮টি লেভেল, ৩টি থিম (দিন, সন্ধ্যা, রাত), আর তারা ও সেরা স্কোর ব্রাউজারে সেভ থাকে।
+## Tech
+- Plain HTML, CSS and JavaScript, with no build step.
+- Physics: [Matter.js](https://brm.io/matter-js/) 0.19, bundled in `lib/`.
+- All graphics are drawn in code on a canvas, with no image files.
+- All sound is made with the Web Audio API.
+- 16 levels in 3 themes (day, sunset, night). Stars and best scores are saved in the browser.
